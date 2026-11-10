@@ -160,7 +160,7 @@
 <body>
   <div class="container">
     <h1>xChillforgex</h1>
-    <h2 id="ver">261110-1442</h2>
+    <h2 id="ver">261110-1458</h2>
 
     <button id="playBtn">Start Beat</button>
     
@@ -184,7 +184,7 @@
     <pre id="dbg" hidden></pre>
   </div>
 
-  <script>
+<script>
     const PROGRESSIONS = {
       jazz251: {
         label: "ii7 - V7 - Imaj7 - VI7 (Jazz Standard)",
@@ -234,6 +234,16 @@
     const MASTER = { id: "master", label: "Master", max: 0, def: -6 };
     const VOL_MIN = -40;
 
+    const KEY_OPTIONS = [
+      ["0", "C"], ["1", "C# / Db"], ["2", "D"], ["3", "D# / Eb"],
+      ["4", "E"], ["5", "F"], ["6", "F# / Gb"], ["7", "G"],
+      ["8", "G# / Ab"], ["9", "A"], ["10", "A# / Bb"], ["11", "B"]
+    ];
+
+    const GROOVE_OPTIONS = [
+      ["chill", "Chill Lofi"], ["boombap", "Boom-Bap Swing"], ["house", "House Beat"]
+    ];
+
     const STYLES = {
       chillwave: {
         label: "Chillwave",
@@ -254,14 +264,8 @@
           { id: "melodyShape", label: "Melody", def: "sine",
             options: shapeOpts(["sine", "softtri", "triangle", "sawtooth", "square"]),
             radio: ["sine", "softtri", "triangle"] },
-          {
-		    id: "rootKey", label: "Root Key", def: "0",
-		    options: [["0", "C"], ["1", "C# / Db"], ["2", "D"], ["3", "D# / Eb"], ["4", "E"], ["5", "F"], ["6", "F# / Gb"], ["7", "G"], ["8", "G# / Ab"], ["9", "A"], ["10", "A# / Bb"], ["11", "B"]]
-		  },
-		  {
-		    id: "drums", label: "Groove", def: "chill",
-		    options: [["chill", "Chill Lofi"], ["boombap", "Boom-Bap Swing"], ["house", "House Beat"]]
-		  }
+          { id: "rootKey", label: "Root Key", def: "0", options: KEY_OPTIONS },
+          { id: "drums", label: "Groove", def: "chill", options: GROOVE_OPTIONS }
         ]
       }
     };
@@ -290,15 +294,9 @@
           options: shapeOpts(["sawtooth", "square", "softtri", "triangle", "sine"]) },
         { id: "variation", label: "Variation", def: "med",
           options: [["off", "Off (Steady Loop)"], ["low", "Rare (Auto Mute)"], ["med", "Occasional (Auto Mute)"], ["high", "Frequent (Auto Mute)"]] },
-        {
-		  id: "rootKey", label: "Root Key", def: "0",
-		  options: [["0", "C"], ["1", "C# / Db"], ["2", "D"], ["3", "D# / Eb"], ["4", "E"], ["5", "F"], ["6", "F# / Gb"], ["7", "G"], ["8", "G# / Ab"], ["9", "A"], ["10", "A# / Bb"], ["11", "B"]]
-		},
-		{
-		  id: "drums", label: "Groove", def: "chill",
-		  options: [["chill", "Chill Lofi"], ["boombap", "Boom-Bap Swing"], ["house", "House Beat"]]
-		}
-	  ]
+        { id: "rootKey", label: "Root Key", def: "0", options: KEY_OPTIONS },
+        { id: "drums", label: "Groove", def: "chill", options: GROOVE_OPTIONS }
+      ]
     };
 
     STYLES.darksynth = {
@@ -330,14 +328,46 @@
           options: shapeOpts(["sawtooth", "square", "softtri", "triangle", "sine"]) },
         { id: "variation", label: "Variation", def: "med",
           options: [["off", "Off (Steady Loop)"], ["low", "Rare (Auto Mute)"], ["med", "Occasional (Auto Mute)"], ["high", "Frequent (Auto Mute)"]] },
-        {
-		  id: "rootKey", label: "Root Key", def: "0",
-		  options: [["0", "C"], ["1", "C# / Db"], ["2", "D"], ["3", "D# / Eb"], ["4", "E"], ["5", "F"], ["6", "F# / Gb"], ["7", "G"], ["8", "G# / Ab"], ["9", "A"], ["10", "A# / Bb"], ["11", "B"]]
-		},
-		{
-		  id: "drums", label: "Groove", def: "chill",
-		  options: [["chill", "Chill Lofi"], ["boombap", "Boom-Bap Swing"], ["house", "House Beat"]]
-		}
+        { id: "rootKey", label: "Root Key", def: "0", options: KEY_OPTIONS },
+        { id: "drums", label: "Groove", def: "chill", options: GROOVE_OPTIONS }
+      ]
+    };
+
+    // Dubstep 2 Restored Properly
+    Object.assign(PROGRESSIONS, {
+      wubmin: { label: "i - bVI - bVII - i (Wub Minor)", chords: [["E2", "B2", "E3", "G3"], ["C3", "G3", "C4", "E4"], ["D3", "A3", "D4", "F#4"], ["E2", "B2", "E3", "G3"]] },
+      darkcyc: { label: "i - iv - bVI - V (Dark Cycle)", chords: [["A2", "E3", "A3", "C4"], ["D3", "A3", "D4", "F4"], ["F2", "C3", "F3", "A3"], ["E2", "B2", "E3", "G#3"]] },
+      pedal: { label: "i - i - bVI - bVII (Heavy Pedal)", chords: [["G2", "D3", "G3", "Bb3"], ["G2", "D3", "G3", "Bb3"], ["Eb2", "Bb2", "Eb3", "G3"], ["F2", "C3", "F3", "A3"]] },
+      drift: { label: "i - bIII - bVII - iv (Dub Drift)", chords: [["D3", "A3", "D4", "F4"], ["F2", "C3", "F3", "A3"], ["C3", "G3", "C4", "E4"], ["G2", "D3", "G3", "Bb3"]] },
+      grind: { label: "i - bII - i - bVII (Grind)", chords: [["F2", "C3", "F3", "Ab3"], ["Gb2", "Db3", "Gb3", "Bb3"], ["F2", "C3", "F3", "Ab3"], ["Eb2", "Bb2", "Eb3", "G3"]] }
+    });
+
+    STYLES.dubstep2 = {
+      label: "Dubstep 2",
+      bpm: { min: 130, max: 150, def: 140 },
+      swing: 0,
+      progs: ["wubmin", "darkcyc", "pedal", "drift", "grind"],
+      lead: "arp", drums: "dark", jitter: 0.002,
+      step: (s, t) => dub2Step(s, t),
+      drive: 3, bassSweep: [380, 1100],
+      cutoffMul: 3.4, padCutoff: 2200, reverb: 0.3, echo: 0,
+      channels: [
+        { id: "drums", label: "Drums", max: 6, def: -2 },
+        { id: "bass",  label: "Bass",  max: 6, def: -3 },
+        { id: "pad",   label: "Pad",   max: 6, def: -5 }
+      ],
+      selects: [
+        { id: "bassVoice", label: "Bass", def: "saw",
+          options: [["saw", "Saw (Classic Wub)"], ["square", "Square (Hollow)"], ["growl", "Growl (Thick Stack)"], ["reese", "Reese (Wide, Phasing)"], ["fm", "FM Metal (Talking)"], ["mixed", "Mixed (Changes by Phrase)"]],
+          radio: ["saw", "square", "growl", "reese"] },
+        { id: "bassPattern", label: "Bassline", def: "half",
+          options: [["half", "Half-Time Hold"], ["hold", "Long Drone"], ["stutter", "Stutter"]] },
+        { id: "padShape", label: "Pad", def: "super",
+          options: [["super", "Supersaw (Wide/Lush)"], ["sawtooth", SHAPE_LABELS.sawtooth], ["softtri", SHAPE_LABELS.softtri]] },
+        { id: "variation", label: "Variation", def: "med",
+          options: [["off", "Off (Endless Drop)"], ["low", "Rare (Break + Build)"], ["med", "Occasional (Break + Build)"], ["high", "Frequent (Break + Build)"]] },
+        { id: "rootKey", label: "Root Key", def: "0", options: KEY_OPTIONS },
+        { id: "drums", label: "Groove", def: "chill", options: GROOVE_OPTIONS }
       ]
     };
 
@@ -399,16 +429,6 @@
 	const snap = () => "play=" + playing + " ctx=" + (ctx ? ctx.state : "-") +
 	  " el=" + (silentEl ? (silentEl.paused ? "paused" : "playing") : "-") + " vis=" + document.visibilityState;
     
-	const diag = () => " mem=" + (performance.memory ? Math.round(performance.memory.usedJSHeapSize / 1048576) + "MB" : "?") + " w=" + waitCount;
-	function alive(why) {
-	  try { localStorage.setItem("chillforge-alive", JSON.stringify({ t: Date.now(), p: playing, w: why })); } catch (e) {}
-	}
-	try {
-	  const pv = JSON.parse(localStorage.getItem("chillforge-alive") || "null");
-	  if (pv && pv.p) log("PREV SESSION ENDED WHILE PLAYING. last alive " + new Date(pv.t).toLocaleString("sv-SE").slice(5) + " (" + pv.w + ")");
-	} catch (e) {}
-	alive("boot");
-    
     let step = 0, nextTime = 0, chordIdx = 0;
     let currentChord = null, lastMelodyNote = null;
     let arpK = 0, arpFreq = null, irBuf = null;
@@ -436,7 +456,9 @@
 	  const m = /^([A-G][#b]?)(-?\d)$/.exec(name);
 	  if (!m) return 440;
 	  const baseMidi = (parseInt(m[2], 10) + 1) * 12 + NOTE_MAP[m[1]];
-	  const shiftedMidi = baseMidi + (parseInt(S.rootKey, 10) || 0);
+	  // Properly evaluate rootKey from UI selections
+	  const transpose = parseInt(S.sel && S.sel.rootKey !== undefined ? S.sel.rootKey : (S.rootKey || 0), 10);
+	  const shiftedMidi = baseMidi + transpose;
 	  return 440 * Math.pow(2, (shiftedMidi - 69) / 12);
 	}
 
@@ -501,17 +523,6 @@
 	  ["play", "pause", "ended", "error", "stalled"].forEach((ev) =>
 	    silentEl.addEventListener(ev, () => log("el " + ev + " " + snap())));
 	  silentEl.addEventListener("waiting", () => { waitCount++; });
-	  silentEl.addEventListener("pause", onElPause);
-	  silentEl.addEventListener("play", () => {
-	    if (playing && yielded) { yielded = false; clearTimeout(yieldTimer); applyMixer(); log("unyield: el playing again"); }
-	  });
-	}
-
-	function onElPause() {
-	  if (!playing) return;
-	  yielded = true; applyMixer();
-	  clearTimeout(yieldTimer);
-	  yieldTimer = setTimeout(() => { if (playing && yielded) stopBeat("yielded to other audio"); }, YIELD_GRACE_MS);
 	}
 
     function initContext() {
@@ -523,9 +534,6 @@
       for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
 
       timer = makeTimer(tick, TICK_MS);
-      ctx.onstatechange = () => {
-	    if (playing && ctx.state !== "running") ctx.resume().catch(() => {});
-	  };
     }
 
     function buildGraph() {
@@ -669,97 +677,128 @@
 	  return { bpm: base.bpm, vol: base.vol, sel: Object.assign({}, base.sel), prog: base.prog };
 	}
 
-	function radioPlan() {
-	  const ids = STYLES[styleKey].channels.map((c) => c.id);
-	  const P = PROGRESSIONS[S.prog].chords.length;
-	  const shuf = (a) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
-	  const sched = (ord) => { let at = 0; const list = ord.map((ch) => { const e = { ch, at }; at += RADIO_STEP_CHOICES[Math.floor(Math.random() * RADIO_STEP_CHOICES.length)]; return e; }); return { list, end: at }; };
+    // Dubstep 2 Module Support
+    const DUB2_PAT = { half: { 0: 10, 10: 5 }, hold: { 0: 15 }, stutter: { 0: 6, 8: 3, 12: 2, 14: 2 } };
+    const DUB2_VOICES = {
+      saw:    [["sawtooth", 1, -12], ["sawtooth", 1, 12]],
+      square: [["square", 1, -8], ["square", 1, 8]],
+      growl:  [["sawtooth", 1, -18], ["sawtooth", 1, 0], ["sawtooth", 1, 18], ["sawtooth", 2, 0]],
+  	  reese:  [["sawtooth", 1, -28], ["sawtooth", 1, -9], ["sawtooth", 1, 9], ["sawtooth", 1, 28]]
+    };
+    const DUB2_VAR = { low: [[24, 32, 32], 0.3], med: [[16, 24, 32], 0.5], high: [[16, 16, 24], 0.7] };
+    const D2 = { g: null, ph: null, left: 0, n: 0, wm: 4, trk: -1, rb: null, mv: "saw" };
+    const d2p = (a) => a[Math.floor(Math.random() * a.length)];
 
-	  const lastIn = Math.random() < 0.5 ? "pad" : "drums";
-	  const inOrd = shuf(ids.filter((c) => c !== lastIn));
-	  if (inOrd[0] === "drums") { const j = inOrd.length - 1; [inOrd[0], inOrd[j]] = [inOrd[j], inOrd[0]]; }
-	  inOrd.push(lastIn);
-
-	  const outOrd = shuf(ids), L = outOrd.length - 1;
-	  if (outOrd[L] === "drums") { const j = Math.floor(Math.random() * L); [outOrd[j], outOrd[L]] = [outOrd[L], outOrd[j]]; }
-
-	  const si = sched(inOrd), so = sched(outOrd), outBars = so.list[L].at;
-	  R.intro = si.list; R.introBars = si.end; R.out = so.list;
-	  const total = rand(RADIO_SEC[0], RADIO_SEC[1]) / (16 * stepDur());
-	  R.ib = Math.max(Math.ceil((R.introBars + P) / P) * P, Math.round((total - outBars - 1) / P) * P);
-	  R.gapBar = R.ib + outBars;
-	  R.bar = 0;
+    function dub2Sweep(t, d, type, f0, f1, v) {
+      const s = ctx.createBufferSource(), fl = ctx.createBiquadFilter(), gn = ctx.createGain();
+      s.buffer = noiseBuf; s.loop = true; fl.type = type; fl.Q.value = 0.8;
+      fl.frequency.setValueAtTime(f0, t); fl.frequency.exponentialRampToValueAtTime(f1, t + d);
+      gn.gain.setValueAtTime(v, t); gn.gain.exponentialRampToValueAtTime(0.001, t + d);
+      s.connect(fl).connect(gn).connect(g.drums); s.start(t); s.stop(t + d + 0.02);
+    }
+    
+	function dub2Riser(t, d) {
+	  const bus = ctx.createGain(), s = ctx.createBufferSource(),
+	        fl = ctx.createBiquadFilter(), lp = ctx.createBiquadFilter(), gn = ctx.createGain();
+	  bus.connect(g.drums); D2.rb = bus;
+	  s.buffer = noiseBuf; s.loop = true;
+	  fl.type = "bandpass"; fl.Q.value = 0.8;
+	  fl.frequency.setValueAtTime(200, t);
+	  fl.frequency.exponentialRampToValueAtTime(3500, t + d);
+	  lp.type = "lowpass"; lp.frequency.value = 4500; lp.Q.value = 0.5;
+	  gn.gain.setValueAtTime(0, t);
+	  gn.gain.linearRampToValueAtTime(0.2, t + d - 0.05);
+	  gn.gain.linearRampToValueAtTime(0, t + d);
+	  s.connect(fl).connect(lp).connect(gn).connect(bus); s.start(t); s.stop(t + d + 0.05);
 	}
 
-	function radioNewTrack(first) {
-	  const st = STYLES[styleKey];
-	  if (!first) {
-	    const ps = st.progs.filter((p) => p !== S.prog);
-	    if (ps.length) S.prog = ps[Math.floor(Math.random() * ps.length)];
-	    const up = Math.random() < clamp(0.5 + (st.bpm.def - S.bpm) / (st.bpm.max - st.bpm.min), 0.1, 0.9);
-	    S.bpm = clamp(S.bpm + (up ? 1 : -1) * Math.round(rand(2, 5)), st.bpm.min, st.bpm.max);
-	    st.selects.forEach((s) => {
-	      if (s.id === "variation") return;
-	      const pool = (s.radio || s.options.map((o) => o[0])).filter((v) => v !== S.sel[s.id]);
-	      if (pool.length) S.sel[s.id] = pool[Math.floor(Math.random() * pool.length)];
-	    });
-	    if (g) g.delay.delayTime.setTargetAtTime(45 / S.bpm, ctx.currentTime, 0.05);
-	  }
-	  R.n++; chordIdx = 0;
-	  radioPlan();
-	  refreshers.forEach((f) => f());
-	  Object.keys(selEls).forEach((id) => { selEls[id].value = S.sel[id]; });
-	  $("progSelect").value = S.prog;
-	  if ("mediaSession" in navigator) {
-	    try {
-	      const old = navigator.mediaSession.metadata;
-	      navigator.mediaSession.metadata = new MediaMetadata({
-	        title: STYLES[styleKey].label + " · " + progName(S.prog),
-	        artist: S.bpm + " BPM · Radio",
-	        artwork: old ? old.artwork : []
-	      });
-	    } catch (e) {}
-	  }
-	}
+    function dub2Lfo(t) {
+      const o = ctx.createOscillator(), gn = ctx.createGain(), bar = 16 * stepDur();
+      o.frequency.value = D2.wm / bar; gn.gain.value = 280;
+      o.connect(gn).connect(g.bassFilter.frequency); o.start(t); o.stop(t + bar + 0.05);
+    }
 
-	function radioInfo() {
-	  $("radioInfo").textContent = R.on ? (playing ? "Track " + R.n + " · " + R.phase : "Radio ready") : "";
-	}
+    function dub2Fm(t, dur, f, subM, gn) {
+      const c = ctx.createOscillator(), m = ctx.createOscillator(), mg = ctx.createGain(), sb = ctx.createOscillator();
+      c.frequency.value = f; m.frequency.value = f * 2;
+      mg.gain.setValueAtTime(f * 4, t); mg.gain.exponentialRampToValueAtTime(f * 1.2, t + dur);
+      m.connect(mg).connect(c.frequency);
+      sb.frequency.value = f * subM;
+      c.connect(gn); sb.connect(gn);
+      [c, m, sb].forEach((o) => { o.start(t); o.stop(t + dur + 0.3); });
+    }
 
-	function radioBar() {
-	  if (R.skip) { R.skip = false; if (R.bar < R.gapBar) R.bar = R.gapBar; }
-	  if (R.bar > R.gapBar) radioNewTrack(false);
-	  const b = R.bar++;
-	  chordIdx = b;
-	  if (b < R.introBars) { R.phase = "intro"; R.mute = R.intro.filter((e) => e.at > b).map((e) => e.ch); }
-	  else if (b >= R.ib) { R.phase = b < R.gapBar ? "outro" : "gap"; R.mute = R.out.filter((e) => e.at <= b - R.ib).map((e) => e.ch); }
-	  else { R.phase = "body"; R.mute = null; }
-	  if (R.mute) resetVariation(); else updateVariation();
-	  radioInfo();
-	}
+    function dub2Bass(t, len) {
+      let v = S.sel.bassVoice;
+      if (v === "mixed") v = D2.mv;
+      const fm = v === "fm", f = noteFreq(currentChord[0]), dur = len * stepDur() * 0.92;
+      const subM = f / 2 < 40 ? 1 : 0.5;
+      const list = fm ? [] : DUB2_VOICES[v].concat([["sine", subM, 0]]);
+      const gn = ctx.createGain(), peak = fm ? 0.22 : 0.5 / list.length;
+      gn.gain.setValueAtTime(0.0001, t); gn.gain.linearRampToValueAtTime(peak, t + 0.008);
+      gn.gain.setTargetAtTime(0, t + dur, 0.04);
+      list.forEach(([ty, m, dt]) => {
+        const o = ctx.createOscillator();
+        o.type = ty; o.frequency.value = f * m; o.detune.value = dt;
+        o.connect(gn); o.start(t); o.stop(t + dur + 0.3);
+      });
+      if (fm) dub2Fm(t, dur, f, subM, gn);
+      gn.connect(g.bassIn);
+    }
 
-	function setRadio(on) {
-	  if (on === R.on) return;
-	  R.on = on;
-	  R.skip = false;
-	  if (on) {
-	    S = radioClone(S); R.n = 0;
-	    if (playing) {
-	      radioNewTrack(true);
-	      R.bar = Math.ceil(R.introBars / PROGRESSIONS[S.prog].chords.length) * PROGRESSIONS[S.prog].chords.length;
-	    }
-	  } else {
-	    Object.assign(R.base, { bpm: S.bpm, prog: S.prog, sel: Object.assign({}, S.sel) });
-	    S = R.base; R.mute = null; resetVariation(); saveSettings();
-	  }
-	  $("radioBtn").textContent = "Radio: " + (on ? "On" : "Off");
-	  $("radioBtn").classList.toggle("on", on);
-	  $("nextBtn").hidden = !on;
-	  radioInfo();
-	  if ("mediaSession" in navigator) {
-	    try { navigator.mediaSession.setActionHandler("nexttrack", on ? () => { if (playing) R.skip = true; } : null); } catch (e) {}
-	  }
-	}
+    function dub2Drums(s, t) {
+      const jt = t + rand(-0.002, 0.002), L = D2.left;
+      if (D2.ph === "build") {
+        if (L === 0 && s >= 14) return;
+        const bi = L <= 3 ? 3 - L : -1;
+        if (bi < 0) { if (s % 4 === 0) kickHard(jt, 0.8); if (s === 8) snare(jt, 0.35); return; }
+        if (bi < 2 && s % 4 === 0) kickHard(jt, 0.8);
+        if (s % [4, 2, 1, 1][bi] === 0) snare(jt, (0.25 + bi * 0.15 + s / 80) * 0.6);
+        return;
+      }
+      if (s === 0) kickHard(jt, 1); else if (s === 10 && Math.random() < 0.6) kickHard(jt, 0.8);
+	  if (s === 8) snare(jt, rand(0.7, 1));
+      if (s % 4 === 2) noiseHit(jt, g.hatHP, 0.01, 0.05);
+      else if (s % 4 === 0) hat(jt, 0.45);
+      else if (Math.random() < 0.5) hat(jt, rand(0.15, 0.3));
+    }
+
+    function dub2Reset(t) {
+      D2.g = g; D2.trk = R.n; D2.ph = null; D2.left = 0; D2.n = 0;
+      if (D2.rb) { D2.rb.gain.cancelScheduledValues(t); D2.rb.gain.setTargetAtTime(0, t, 0.03); D2.rb = null; }
+    }
+
+    function dub2Next(t) {
+      const V2 = DUB2_VAR[S.sel.variation], old = D2.ph, loud = !muted("drums"), sd = stepDur();
+      const go = (ph, n) => { D2.ph = ph; D2.left = n; };
+      const build = (n) => { go("build", n); if (loud) dub2Riser(t, n * 16 * sd); };
+      if (!old) { if (R.on) go("drop", d2p(V2 ? V2[0] : [16])); else build(4); }
+      else if (old === "build") { go("drop", d2p(V2 ? V2[0] : [16])); if (loud && Math.random() < 0.75) dub2Sweep(t, rand(1.0, 2.2), "bandpass", rand(2200, 3500), rand(900, 1600), rand(0.1, 0.2)); }
+      else if (old === "break") build(d2p([4, 8]));
+      else if (!V2) go("drop", 16);
+      else {
+        if (loud && Math.random() < 0.66) dub2Sweep(t, rand(1.0, 1.8), "bandpass", rand(2500, 4000), rand(200, 400), rand(0.15, 0.25));
+        if (Math.random() < V2[1]) go("break", 8); else build(4);
+      }
+    }
+
+    function dub2Step(s, t) {
+      if (s === 0) {
+        if (R.on) radioBar();
+        if (D2.g !== g || (R.on && D2.trk !== R.n)) dub2Reset(t);
+        if (D2.left <= 0) dub2Next(t);
+        D2.left--;
+        if ((D2.n++ & 3) === 0) { D2.wm = d2p([2, 4, 4, 8, 8, 12]); D2.mv = d2p(["saw", "square", "growl", "reese", "fm"]); }
+        playChord(t, !muted("pad"));
+        if (D2.ph === "drop" && !muted("bass")) dub2Lfo(t);
+      }
+      if (D2.ph === "break") return;
+      if (!muted("drums")) dub2Drums(s, t);
+      if (D2.ph === "drop" && !muted("bass")) {
+        const len = DUB2_PAT[S.sel.bassPattern][s];
+        if (len) dub2Bass(t, len);
+      }
+    }
 
     function playChord(t, withPad) {
       const chords = PROGRESSIONS[S.prog].chords;
@@ -854,13 +893,11 @@
 	    });
 	  }
 	  if (i < 0) return Math.floor(Math.random() * n);
-	
 	  if (pat === "scatter") {
 	    let j;
 	    do { j = Math.floor(Math.random() * n); } while (j === i && n > 1);
 	    return j;
 	  }
-	
 	  const r = Math.random();
 	  const dist = r < 0.50 ? 1 : r < 0.65 ? 0 : r < 0.90 ? 2 : 3 + Math.floor(Math.random() * 2);
 	  const dir = Math.random() < 0.5 ? 1 : -1;
@@ -1017,9 +1054,7 @@
       if (s === 0) kick(jt, 1);
       else if (s === 6 && Math.random() < 0.4) kick(jt, 0.8);
       else if (s === 10 && Math.random() < 0.35) kick(jt, 0.75);
-
       if (s === 4 || s === 12) snare(jt, rand(0.85, 1));
-
       if (s % 2 === 0) hat(jt, s % 4 === 2 ? rand(0.9, 1) : rand(0.4, 0.6));
       else if (Math.random() < 0.15) hat(jt, 0.3);
     }
@@ -1027,9 +1062,7 @@
     function drumsSynth(s, jt) {
       if (s === 0 || s === 8) kick(jt, 1);
       else if ((s === 10 || s === 14) && Math.random() < 0.3) kick(jt, 0.7);
-
       if (s === 4 || s === 12) snare(jt, rand(0.9, 1));
-
       if (s % 4 === 2) noiseHit(jt, g.hatHP, 0.14, 0.11);
       else if (s % 4 === 0) hat(jt, 0.5);
       else if (Math.random() < 0.6) hat(jt, rand(0.15, 0.25));
@@ -1039,9 +1072,7 @@
       if (s === 0 || s === 8) kickHard(jt, 1);
       else if (s === 3 && Math.random() < 0.2) kickHard(jt, 0.7);
       else if ((s === 6 || s === 10 || s === 14) && Math.random() < 0.3) kickHard(jt, 0.8);
-
       if (s === 4 || s === 12) gatedSnare(jt, rand(0.5, 0.65));
-
       if (s % 4 === 2) hat(jt, rand(0.8, 1));
       else if (s % 4 === 0) hat(jt, 0.45);
       else if (Math.random() < 0.7) hat(jt, rand(0.15, 0.3));
@@ -1050,10 +1081,8 @@
 	function drumsBoomBap(s, jt) {
 	  if (s === 0 || s === 10) kick(jt, 0.95);
 	  else if (s === 7 && Math.random() < 0.5) kick(jt, 0.65);
-
 	  if (s === 4 || s === 12) snare(jt, 0.9);
 	  else if (s === 14 && Math.random() < 0.35) snare(jt, 0.35);
-
 	  if (s % 2 === 0) hat(jt, s % 4 === 2 ? 0.6 : 0.4);
 	  else if (Math.random() < 0.25) hat(jt, 0.2);
 	}
@@ -1079,7 +1108,8 @@
 	  }
 
       if (!muted("drums")) {
-        const grooveFunc = DRUMS[S.sel.drums] || DRUMS[st.drums];
+        const grooveKey = S.sel.drums || st.drums;
+        const grooveFunc = DRUMS[grooveKey] || DRUMS[st.drums];
         grooveFunc(s, t + rand(-st.jitter, st.jitter));
       }
 
@@ -1095,18 +1125,10 @@
     function tick() {
 	  if (!playing || !g) return;
 	  const now = ctx.currentTime;
-	  if (nextTime < now - 0.1) { log("RESYNC late=" + Math.round((now - nextTime) * 1000) + "ms"); nextTime = now + 0.05; }
 	  while (nextTime < now + LOOKAHEAD) {
-	    try { scheduleStep(step, nextTime); }
-	    catch (e) { log("ERR step " + step + ": " + (e && e.message)); }
+	    try { scheduleStep(step, nextTime); } catch (e) {}
 	    nextTime += stepDur();
 	    step = (step + 1) % 16;
-	  }
-	  if (Date.now() - lastAliveTs > 30000) { lastAliveTs = Date.now(); alive("tick"); }
-	  if (Date.now() - lastBeat > 300000) {
-	    lastBeat = Date.now();
-	    if (silentEl && !silentEl.paused) resumeTries = 0;
-	    log("hb " + snap() + " ct=" + Math.round(ctx.currentTime) + diag());
 	  }
 	}
 
@@ -1118,6 +1140,7 @@
       chanDefs(st).forEach((c) => { vol[c.id] = c.def; });
       const sel = {};
       st.selects.forEach((s) => { sel[s.id] = s.def; });
+      if (!sel.rootKey) sel.rootKey = "0";
       return { bpm: st.bpm.def, vol, sel, prog: st.progs[0], rootKey: 0 };
     }
 
@@ -1135,8 +1158,7 @@
         if (s.options.some((o) => o[0] === v)) d.sel[s.id] = v;
       });
       if (st.progs.includes(src.prog)) d.prog = src.prog;
-      const rootKey = parseInt(src.rootKey, 10);
-	  if (isFinite(rootKey)) d.rootKey = clamp(rootKey, 0, 11);
+      if (src.sel && src.sel.rootKey !== undefined) d.sel.rootKey = src.sel.rootKey;
     }
 
     function loadSettings() {
@@ -1147,15 +1169,6 @@
           const o = JSON.parse(raw);
           if (STYLES[o.style]) styleKey = o.style;
           Object.keys(STYLES).forEach((k) => mergeState(k, (o.store || {})[k]));
-        } else {
-          const old = JSON.parse(localStorage.getItem("chillforge-settings") || "null");
-          if (old) {
-            mergeState("chillwave", {
-              bpm: old.bpmSlider, prog: old.progSelect,
-              vol: { master: old.masterVol, drums: old.drumsVol, pad: old.padVol, melody: old.melodyVol },
-              sel: { padShape: old.padShape, melodyShape: old.melodyShape }
-            });
-          }
         }
       } catch (e) {}
       S = store[styleKey];
@@ -1193,9 +1206,9 @@
       const cell = el("div", "cell");
       const lbl = el("div", "lbl"); lbl.textContent = label;
       const ctl = el("div", "ctl");
-      const dec = el("button", "step"); dec.textContent = "\u2212"; dec.setAttribute("aria-label", label + " down");
+      const dec = el("button", "step"); dec.textContent = "\u2212";
       const val = el("div", "val");
-      const inc = el("button", "step"); inc.textContent = "+"; inc.setAttribute("aria-label", label + " up");
+      const inc = el("button", "step"); inc.textContent = "+";
       const show = () => {
         val.textContent = fmt(get());
         dec.disabled = get() <= min;
@@ -1246,15 +1259,12 @@
         const lbl = el("div", "lbl"); lbl.textContent = s.label;
         const sel = el("select");
         selEls[s.id] = sel;
-        sel.setAttribute("aria-label", s.label + " sound");
         s.options.forEach(([v, text]) => {
           const o = el("option"); o.value = v; o.textContent = text; sel.appendChild(o);
         });
         sel.value = S.sel[s.id];
         sel.addEventListener("change", () => {
           S.sel[s.id] = sel.value;
-          if (s.id === "variation" && sel.value === "off") resetVariation();
-          if (R.on && s.id === "variation") R.base.sel.variation = sel.value;
           saveSettings();
         });
         row.append(lbl, sel);
@@ -1275,10 +1285,6 @@
     function switchStyle(key) {
       styleKey = key;
 	  S = store[key];
-	  if (R.on) S = radioClone(S);
-	  radioInfo();
-	  chordIdx = 0; currentChord = null; lastMelodyNote = null;
-      resetVariation();
       buildControls();
       fillProgressions();
       saveSettings();
@@ -1286,50 +1292,33 @@
     }
 
     function startBeat() {
-      yielded = false;
       if (playing) return;
       if (!ctx) initContext();
-      ensureSilentEl();
       ctx.resume();
-      silentEl.play().catch(() => {});
       buildGraph();
       step = 0; chordIdx = 0; currentChord = null; lastMelodyNote = null; arpFreq = null;
-      resetVariation();
-      if (R.on) { R.n = 0; R.skip = false; radioNewTrack(true); }
       nextTime = ctx.currentTime + 0.1;
       playing = true;
-      alive("start");
       timer.start();
       $("playBtn").textContent = "Stop Beat";
       $("playBtn").classList.add("playing");
-      if ("mediaSession" in navigator) navigator.mediaSession.playbackState = "playing";
     }
 
-	function stopBeat(why) {
+	function stopBeat() {
 	  if (!playing) return;
 	  playing = false;
-	  alive("stop");
-	  clearTimeout(resumeTimer); clearTimeout(yieldTimer); yielded = false; resumeTries = 0;
 	  timer.stop();
       teardownGraph();
-      if (silentEl) silentEl.pause();
-      resetVariation();
-      radioInfo();
       $("playBtn").textContent = "Start Beat";
       $("playBtn").classList.remove("playing");
-      if ("mediaSession" in navigator) navigator.mediaSession.playbackState = "paused";
     }
 
     function restartBeat() {
-      playing = false;
-      timer.stop();
-      teardownGraph();
+      stopBeat();
       startBeat();
     }
 
     $("playBtn").addEventListener("click", () => (playing ? stopBeat() : startBeat()));
-	$("radioBtn").addEventListener("click", () => setRadio(!R.on));
-	$("nextBtn").addEventListener("click", () => { if (R.on && playing) R.skip = true; });
 
     loadSettings();
 
@@ -1341,39 +1330,11 @@
     styleSelect.addEventListener("change", (e) => switchStyle(e.target.value));
 
     $("progSelect").addEventListener("change", (e) => {
-      S.prog = e.target.value; chordIdx = 0; resetVariation(); saveSettings();
+      S.prog = e.target.value; chordIdx = 0; saveSettings();
     });
 
     buildControls();
     fillProgressions();
-
-    if ("mediaSession" in navigator) {
-      try {
-        navigator.mediaSession.metadata = new MediaMetadata({
-          title: "Chillforge",
-          artist: "Generative lo-fi beat",
-          artwork: [
-            { src: "app-icons/app-icon-192.png", sizes: "192x192", type: "image/png" },
-            { src: "app-icons/app-icon-512.png", sizes: "512x512", type: "image/png" }
-          ]
-        });
-        navigator.mediaSession.setActionHandler("play", () => { playing ? restartBeat() : startBeat(); });
-		navigator.mediaSession.setActionHandler("pause", () => stopBeat("ms pause"));
-		navigator.mediaSession.setActionHandler("stop", () => stopBeat("ms stop"));
-      } catch (e) {}
-    }
-
-	document.addEventListener("visibilitychange", () => {
-	  if (document.hidden || !playing) return;
-	  if (silentEl && silentEl.paused && !yielded) silentEl.play().catch(() => stopBeat("visible, el paused"));
-	  if (ctx.state !== "running") ctx.resume().catch(() => {});
-	});
-
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker.register("service-worker.js").catch(() => {});
-      });
-    }
   </script>
 </body>
 </html>

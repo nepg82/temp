@@ -160,7 +160,7 @@
 <body>
   <div class="container">
     <h1>xChillforgex</h1>
-    <h2 id="ver">261110-1458</h2>
+    <h2 id="ver">261110-1507</h2>
 
     <button id="playBtn">Start Beat</button>
     
@@ -672,10 +672,53 @@
 
 	const progName = (k) => (PROGRESSIONS[k].label.match(/\(([^)]+)\)/) || [0, k])[1];
 
-	function radioClone(base) {
-	  R.base = base;
-	  return { bpm: base.bpm, vol: base.vol, sel: Object.assign({}, base.sel), prog: base.prog };
-	}
+function radioClone(base) {
+  R.base = base;
+  return { 
+    bpm: base.bpm, 
+    vol: base.vol, 
+    sel: Object.assign({}, base.sel), 
+    prog: base.prog,
+    rootKey: base.rootKey 
+  };
+}
+
+function radioNewTrack(first) {
+  const st = STYLES[styleKey];
+  if (!first) {
+    const ps = st.progs.filter((p) => p !== S.prog);
+    if (ps.length) S.prog = ps[Math.floor(Math.random() * ps.length)];
+    const up = Math.random() < clamp(0.5 + (st.bpm.def - S.bpm) / (st.bpm.max - st.bpm.min), 0.1, 0.9);
+    S.bpm = clamp(S.bpm + (up ? 1 : -1) * Math.round(rand(2, 5)), st.bpm.min, st.bpm.max);
+    
+    st.selects.forEach((s) => {
+      if (s.id === "variation") return;
+      // Optional: uncomment below if you want Radio to also randomize root key per track change
+      // if (s.id === "rootKey" && Math.random() < 0.3) {
+      //   S.sel.rootKey = String(Math.floor(Math.random() * 12));
+      //   return;
+      // }
+      const pool = (s.radio || s.options.map((o) => o[0])).filter((v) => v !== S.sel[s.id]);
+      if (pool.length) S.sel[s.id] = pool[Math.floor(Math.random() * pool.length)];
+    });
+    if (g && g.delay) g.delay.delayTime.setTargetAtTime(45 / S.bpm, ctx.currentTime, 0.05);
+  }
+  R.n++; chordIdx = 0;
+  radioPlan();
+  refreshers.forEach((f) => f());
+  Object.keys(selEls).forEach((id) => { if (selEls[id]) selEls[id].value = S.sel[id]; });
+  $("progSelect").value = S.prog;
+  if ("mediaSession" in navigator) {
+    try {
+      const old = navigator.mediaSession.metadata;
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: STYLES[styleKey].label + " · " + progName(S.prog),
+        artist: S.bpm + " BPM · Radio",
+        artwork: old ? old.artwork : []
+      });
+    } catch (e) {}
+  }
+}
 
     // Dubstep 2 Module Support
     const DUB2_PAT = { half: { 0: 10, 10: 5 }, hold: { 0: 15 }, stutter: { 0: 6, 8: 3, 12: 2, 14: 2 } };

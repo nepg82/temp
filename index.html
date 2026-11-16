@@ -497,7 +497,8 @@
 	alive("boot");
     
     let step = 0, nextTime = 0, chordIdx = 0;
-    let currentChord = null, lastMelodyNote = null;
+	let currentChord = null, lastMelodyNote = null;
+	let melodyIndex = null, melodyDirection = 1;
     let arpK = 0, arpFreq = null, irBuf = null;   // arpFreq = last arp note played (Wander/Scatter memory)
 
     // Variation state: mute = array of muted channel ids (or null), bars = bars left in the scene,
@@ -1013,30 +1014,53 @@
 	  o.stop(t + dur + 0.25);
 	}
 
-    function playMelody(t) {
-      if (!currentChord) return;
-      let note;
-      do { note = currentChord[Math.floor(Math.random() * currentChord.length)]; }
-      while (note === lastMelodyNote && currentChord.length > 1);
-      lastMelodyNote = note;
+	function playMelody(t) {
+	  if (!currentChord) return;
+	
+	  const count = currentChord.length;
+	
+	  // Start around the middle of the chord's available notes.
+	  if (melodyIndex === null) {
+	    melodyIndex = Math.floor(count / 2);
+	  } else {
+	    const r = Math.random();
+	
+	    // Occasionally reverse direction.
+	    if (r < 0.18) melodyDirection *= -1;
+	
+	    // Usually move one step; sometimes make a larger leap.
+	    const move = r > 0.82 ? 2 : 1;
+	    let next = melodyIndex + melodyDirection * move;
+	
+	    // Turn around at the edges.
+	    if (next < 0 || next >= count) {
+	      melodyDirection *= -1;
+	      next = melodyIndex + melodyDirection;
+	    }
+	
+	   	melodyIndex = Math.max(0, Math.min(count - 1, next));
+	  }	
 
-      const shape = S.sel.melodyShape;
-      const units = [1, 1, 1, 2, 2, 3, 4][Math.floor(Math.random() * 7)];
-      const dur = units * stepDur();
-      const peak = 0.2 * SHAPE_LEVEL[shape];
+	  const note = currentChord[melodyIndex];
+	  lastMelodyNote = note;
+	
+	  const shape = S.sel.melodyShape;
+	  const units = [1, 1, 1, 2, 2, 3, 4][Math.floor(Math.random() * 7)];
+	  const dur = units * stepDur();
+	  const peak = 0.2 * SHAPE_LEVEL[shape];
 
-      const o = ctx.createOscillator();
-      const gn = ctx.createGain();
-      applyShape(o, shape);
-      o.frequency.value = noteFreq(note) * 2;
-      gn.gain.setValueAtTime(0.0001, t);
-      gn.gain.linearRampToValueAtTime(peak, t + 0.03);
-      gn.gain.setTargetAtTime(peak * 0.5, t + 0.03, 0.12);
-      gn.gain.setTargetAtTime(0, t + dur, 0.12);
-      o.connect(gn).connect(g.melody);
-      o.start(t);
-      o.stop(t + dur + 0.9);
-    }
+	  const o = ctx.createOscillator();
+	  const gn = ctx.createGain();
+	  applyShape(o, shape);
+	  o.frequency.value = noteFreq(note) * 2;
+	  gn.gain.setValueAtTime(0.0001, t);
+	  gn.gain.linearRampToValueAtTime(peak, t + 0.03);
+	  gn.gain.setTargetAtTime(peak * 0.5, t + 0.03, 0.12);
+	  gn.gain.setTargetAtTime(0, t + dur, 0.12);
+	  o.connect(gn).connect(g.melody);
+	  o.start(t);
+	  o.stop(t + dur + 0.9);
+	}
 
     function noiseHit(t, dest, level, decay) {
       const s = ctx.createBufferSource();
@@ -1555,6 +1579,7 @@
 	  if (R.on) S = radioClone(S);
 	  radioInfo();
 	  chordIdx = 0; currentChord = null; lastMelodyNote = null;
+	  melodyIndex = null; melodyDirection = 1;
       resetVariation();
       buildControls();
       fillProgressions();
@@ -1576,6 +1601,7 @@
       silentEl.play().catch(() => {});
       buildGraph();
       step = 0; chordIdx = 0; currentChord = null; lastMelodyNote = null; arpFreq = null;
+	  melodyIndex = null; melodyDirection = 1;
       resetVariation();
       if (R.on) { R.n = 0; R.skip = false; radioNewTrack(true); }
       nextTime = ctx.currentTime + 0.1;

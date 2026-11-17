@@ -164,7 +164,7 @@
 <body>
   <div class="container">
     <h1>xChillforgex</h1>
-    <h2 id="ver">261117-1128</h2>
+    <h2 id="ver">261117-1134</h2>
 
     <button id="playBtn">Start Beat</button>
     
@@ -1360,17 +1360,33 @@
     // ---------------------------------------------------------------
     // Scheduler (16 steps per bar, 4/4)
     // ---------------------------------------------------------------
-    function drumsChill(s, jt) {
-      if (s === 0) kick(jt, 1);
-      else if (s === 6 && Math.random() < 0.4) kick(jt, 0.8);
-      else if (s === 10 && Math.random() < 0.35) kick(jt, 0.75);
+	function drumsChill(s, jt) {
+	  // Main kick pattern
+	  if (s === 0) kick(jt, 1);
+	  else if (s === 6 && Math.random() < 0.4) kick(jt, 0.8);
+	  else if (s === 10 && Math.random() < 0.35) kick(jt, 0.75);
 
-      if (s === 4 || s === 12) snare(jt, rand(0.85, 1));
+	  // Occasional extra kick
+	  if (s === 8 && Math.random() < 0.18) kick(jt, 0.65);
+	  if (s === 14 && Math.random() < 0.12) kick(jt, 0.6);
 
-      if (s % 2 === 0) hat(jt, s % 4 === 2 ? rand(0.9, 1) : rand(0.4, 0.6));
-      else if (Math.random() < 0.15) hat(jt, 0.3);
-    }
+	  // Main snare hits
+	  if (s === 4 || s === 12) snare(jt, rand(0.85, 1));
 
+	  // Quiet ghost snares
+	  if ((s === 3 || s === 11 || s === 15) &&
+	      Math.random() < 0.12) {
+	    snare(jt, 0.25);
+	  }
+
+	  // Hi-hat variation
+	  if (s % 2 === 0) {
+	    if (Math.random() < 0.10) return;
+	    hat(jt, s % 4 === 2 ? rand(0.75, 1) : rand(0.3, 0.55));
+	  } else if (Math.random() < 0.18) {
+	    hat(jt, rand(0.2, 0.4));
+	  }
+	}
     // Straight 80s pattern: kick on 1 and 3, big snare on 2 and 4, open hats on the offbeats.
     function drumsSynth(s, jt) {
       if (s === 0 || s === 8) kick(jt, 1);

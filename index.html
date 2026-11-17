@@ -164,7 +164,7 @@
 <body>
   <div class="container">
     <h1>xChillforgex</h1>
-    <h2 id="ver">261116-1721</h2>
+    <h2 id="ver">261117-0738</h2>
 
     <button id="playBtn">Start Beat</button>
     
@@ -235,10 +235,37 @@
       sway: {
         label: "Imaj9 - IVmaj9 (Two-Chord Sway)",
         chords: [
-          ["C3", "E3", "G3", "B3", "D4"],  // Cmaj9
-          ["E3", "G3", "B3", "D4", "G4"],  // Cmaj9 (open voicing)
-          ["F3", "A3", "C4", "E4", "G4"],  // Fmaj9
-          ["A3", "C4", "E4", "G4"]         // Fmaj9 (upper voicing)
+          ["C3", "E3", "G3", "B3", "D4"],
+          ["E3", "G3", "B3", "D4", "G4"],
+          ["F3", "A3", "C4", "E4", "G4"],
+          ["A3", "C4", "E4", "G4"]
+        ]
+      },
+      afterglow: {
+        label: "Imaj9 - iii7 - vi9 - IVmaj9 (Afterglow)",
+        chords: [
+          ["C3", "E3", "G3", "B3", "D4"],
+          ["E3", "G3", "B3", "D4"],
+          ["A2", "C3", "E3", "G3", "B3"],
+          ["F3", "A3", "C4", "E4", "G4"]
+        ]
+      },
+      bluehour: {
+        label: "vi9 - IVmaj9 - Imaj9 - V6 (Blue Hour)",
+        chords: [
+          ["A2", "C3", "E3", "G3", "B3"],
+          ["F3", "A3", "C4", "E4", "G4"],
+          ["C3", "E3", "G3", "B3", "D4"],
+          ["G2", "B2", "D3", "E3"]
+        ]
+      },
+      openroad: {
+        label: "Imaj9 - VI7 - ii9 - V13 (Open Road)",
+        chords: [
+          ["C3", "E3", "G3", "B3", "D4"],
+          ["A2", "C#3", "E3", "G3"],
+          ["D3", "F3", "A3", "C4", "E4"],
+          ["G2", "B2", "D3", "E3", "F3"]
         ]
       }
     };
@@ -342,7 +369,10 @@
         label: "Chillwave",
         bpm: { min: 55, max: 95, def: 83 },
         swing: 0.16,                        // delay on off-16ths, fraction of a step
-        progs: ["jazz251", "rising", "descending", "turnaround", "sway"],
+        progs: [
+		  "jazz251", "rising", "descending", "turnaround", "sway",
+		  "afterglow", "bluehour", "openroad"
+		],
         lead: "melody", drums: "chill", jitter: 0.005,
         cutoffMul: 1, padCutoff: 1800, reverb: 0, echo: 0.3,
         channels: [                         // mixer rows (Master is always added first)
